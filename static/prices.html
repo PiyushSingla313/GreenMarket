@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Mandi Prices — GreenMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.price-hero-stats { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+.ph-stat { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 14px 22px; }
+.ph-stat strong { display: block; font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: #fff; }
+.ph-stat span { font-size: 13px; color: rgba(255,255,255,0.7); }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: #4caf50; display: inline-block; animation: pulse 1.5s infinite; margin-right: 6px; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+.chart-bar-wrap { margin-top: 32px; }
+.chart-bar-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.chart-bar-label { width: 120px; font-size: 13px; font-weight: 600; color: var(--text-mid); text-align: right; flex-shrink: 0; }
+.chart-bar-outer { flex: 1; height: 32px; background: var(--green-pale); border-radius: 6px; overflow: hidden; }
+.chart-bar-inner { height: 100%; background: var(--green-mid); border-radius: 6px; display: flex; align-items: center; padding-left: 12px; color: #fff; font-size: 13px; font-weight: 600; transition: width 1s; }
+.chart-bar-inner.up { background: #2e7d32; }
+.chart-bar-inner.down { background: #c62828; }
+.msp-section { background: var(--amber-light); border: 1.5px solid #ffcc80; border-radius: var(--radius); padding: 24px; margin-bottom: 28px; }
+.msp-section h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--amber); margin-bottom: 6px; }
+.msp-section p { font-size: 14px; color: #5d3a00; margin-bottom: 16px; }
+.msp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.msp-card { background: #fff; border: 1px solid #ffcc80; border-radius: 10px; padding: 14px; }
+.msp-card .crop { font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 4px; }
+.msp-card .price { font-size: 18px; font-weight: 700; font-family: 'Syne', sans-serif; color: var(--amber); }
+.msp-card .unit { font-size: 11px; color: var(--text-muted); }
+.tabs { display: flex; gap: 0; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 24px; width: fit-content; }
+.tab-btn { padding: 10px 24px; font-size: 14px; font-weight: 600; cursor: pointer; background: var(--bg); border: none; color: var(--text-muted); transition: all 0.15s; }
+.tab-btn.active { background: var(--green-mid); color: #fff; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">🌿 GreenMarket</a>
+    <ul class="nav-links">
+      <li><a href="marketplace.html" data-t="nav_marketplace">Marketplace</a></li>
+      <li><a href="prices.html" class="active" data-t="nav_prices">Live Prices</a></li>
+      <li><a href="storage.html" data-t="nav_storage">Cold Storage</a></li>
+      <li><a href="rentals.html" data-t="nav_rentals">Rentals & Supplies</a></li>
+      <li><a href="schemes.html" data-t="nav_schemes">Gov Schemes</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost" data-t="nav_login">Login</a>
+      <a href="register.html" class="btn btn-primary" data-t="nav_join">Join Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="marketplace.html" data-t="nav_marketplace">Marketplace</a>
+    <a href="prices.html" data-t="nav_prices">Live Prices</a>
+    <a href="storage.html" data-t="nav_storage">Cold Storage</a>
+    <a href="rentals.html" data-t="nav_rentals">Rentals</a>
+    <a href="schemes.html" data-t="nav_schemes">Gov Schemes</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <span class="live-dot"></span>
+      <span style="font-size:13px;color:rgba(255,255,255,0.8);font-weight:600;">LIVE DATA — Updated every 15 minutes</span>
+    </div>
+    <h1>📊 Mandi Price Tracker</h1>
+    <p>Real-time wholesale prices from 500+ APMC mandis across India.</p>
+    <div class="price-hero-stats">
+      <div class="ph-stat"><strong>₹2,180</strong><span>Wheat (Quintal)</span></div>
+      <div class="ph-stat"><strong>₹42/kg</strong><span>Tomato</span></div>
+      <div class="ph-stat"><strong>₹6,800</strong><span>Basmati Rice (Q)</span></div>
+      <div class="ph-stat"><strong>₹4,200</strong><span>Soybean (Q)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="padding:40px 24px 64px;">
+
+  <!-- MSP BOX -->
+  <div class="msp-section">
+    <h3>🏛️ Government MSP (Minimum Support Prices) — Rabi 2024-25</h3>
+    <p>These are the minimum prices the government guarantees for your crops. Never sell below MSP!</p>
+    <div class="msp-grid" id="mspGrid"></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:24px;">
+    <div class="price-filters">
+      <button class="filter-btn active" onclick="setTab(this,'grains')">🌾 Grains</button>
+      <button class="filter-btn" onclick="setTab(this,'vegetables')">🥦 Vegetables</button>
+      <button class="filter-btn" onclick="setTab(this,'fruits')">🍎 Fruits</button>
+      <button class="filter-btn" onclick="setTab(this,'pulses')">🫘 Pulses</button>
+      <button class="filter-btn" onclick="setTab(this,'oilseeds')">🌻 Oilseeds</button>
+    </div>
+    <select id="stateSelect" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;" onchange="filterByState(this.value)">
+      <option value="">All States</option>
+      <option>Punjab</option>
+      <option>Haryana</option>
+      <option>UP</option>
+      <option>Maharashtra</option>
+      <option>MP</option>
+      <option>Rajasthan</option>
+    </select>
+  </div>
+
+  <!-- PRICE TABLE -->
+  <div style="overflow-x:auto;">
+    <table class="price-table" id="priceTable">
+      <thead>
+        <tr>
+          <th>Crop</th>
+          <th>Mandi / Market</th>
+          <th>State</th>
+          <th>Min Price</th>
+          <th>Max Price</th>
+          <th>Modal Price</th>
+          <th>Change</th>
+          <th>Unit</th>
+        </tr>
+      </thead>
+      <tbody id="priceBody"></tbody>
+    </table>
+  </div>
+
+  <!-- PRICE CHART -->
+  <div style="margin-top:48px;">
+    <h2 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">Price Trend Chart</h2>
+    <p style="color:var(--text-muted);font-size:14px;margin-bottom:24px;">Relative price comparison across crops today (modal price vs national average)</p>
+    <div class="chart-bar-wrap" id="barChart"></div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span>© 2025 GreenMarket — <a href="index.html" style="color:#a5d6a7;">Home</a></span>
+      <span>Data sourced from Agmarknet & APMC portals</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+async function loadMsp() {
+  const mspGrid = document.getElementById('mspGrid');
+  try {
+    const msp = await api('/prices/msp');
+    mspGrid.innerHTML = msp.map(m => `<div class="msp-card"><div class="crop">${m.crop}</div><div class="price">₹${m.price.toLocaleString()}</div><div class="unit">${m.unit}</div></div>`).join('');
+  } catch (e) {
+    mspGrid.innerHTML = `<p style="color:var(--text-muted)">Couldn't load MSP data.</p>`;
+  }
+}
+
+let currentTab = 'grains';
+let currentTabData = [];
+
+async function setTab(btn, tab) {
+  document.querySelectorAll('.price-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentTab = tab;
+  await loadTab();
+}
+
+async function loadTab() {
+  const state = document.getElementById('stateSelect').value;
+  const params = new URLSearchParams({ category: currentTab });
+  if (state) params.set('state', state);
+  try {
+    currentTabData = await api(`/prices/mandi?${params.toString()}`);
+  } catch (e) {
+    document.getElementById('priceBody').innerHTML = `<tr><td colspan="8">Couldn't load prices: ${e.message}</td></tr>`;
+    return;
+  }
+  renderTable(currentTabData);
+  renderChart(currentTabData);
+}
+
+function renderTable(data) {
+  const body = document.getElementById('priceBody');
+  body.innerHTML = data.map(r => `
+    <tr>
+      <td><strong>${r.crop}</strong></td>
+      <td>${r.mandi}</td>
+      <td>${r.state}</td>
+      <td>₹${r.min_price.toLocaleString()}</td>
+      <td>₹${r.max_price.toLocaleString()}</td>
+      <td><strong>₹${r.modal_price.toLocaleString()}</strong></td>
+      <td class="${r.change_percent>0?'price-up':'price-down'}">${r.change_percent>0?'▲':'▼'} ${Math.abs(r.change_percent)}%</td>
+      <td>${r.unit}</td>
+    </tr>`).join('');
+}
+function renderChart(data) {
+  if (!data.length) { document.getElementById('barChart').innerHTML = ''; return; }
+  const maxModal = Math.max(...data.map(d => d.modal_price));
+  const chart = document.getElementById('barChart');
+  chart.innerHTML = data.map(d => {
+    const pct = Math.round((d.modal_price / maxModal) * 85);
+    const cls = d.change_percent > 0 ? 'up' : 'down';
+    return `<div class="chart-bar-row">
+      <div class="chart-bar-label">${d.crop}</div>
+      <div class="chart-bar-outer">
+        <div class="chart-bar-inner ${cls}" style="width:${pct}%">₹${d.modal_price.toLocaleString()}</div>
+      </div>
+      <span class="${d.change_percent>0?'price-up':'price-down'}" style="font-size:13px;font-weight:600;width:56px;text-align:right">${d.change_percent>0?'+':''}${d.change_percent}%</span>
+    </div>`;
+  }).join('');
+}
+function filterByState() {
+  loadTab();
+}
+
+loadMsp();
+loadTab();
+</script>
+</body>
+</html>

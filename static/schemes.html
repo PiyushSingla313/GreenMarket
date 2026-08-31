@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Government Schemes — GreenMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.scheme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; margin-top: 28px; }
+.scheme-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.2s; }
+.scheme-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.scheme-icon { font-size: 36px; margin-bottom: 12px; }
+.scheme-badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+.scheme-name { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin: 8px 0; }
+.scheme-full-name { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; font-style: italic; }
+.scheme-desc { font-size: 14px; color: var(--text-mid); line-height: 1.7; margin-bottom: 16px; }
+.scheme-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.sd-item { background: var(--bg); border-radius: 8px; padding: 10px 12px; }
+.sd-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+.sd-val { font-size: 14px; font-weight: 700; }
+.scheme-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.stag { font-size: 11px; padding: 4px 10px; background: var(--green-pale); color: var(--green-mid); border-radius: 100px; font-weight: 600; }
+.scheme-footer { display: flex; gap: 10px; }
+.highlight-box {
+  background: linear-gradient(135deg,#1b5e20,#2e7d32);
+  border-radius: 14px; padding: 28px 32px; color: #fff;
+  display: flex; align-items: center; gap: 24px;
+  margin-bottom: 36px; flex-wrap: wrap;
+}
+.hb-icon { font-size: 56px; }
+.hb-text h2 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+.hb-text p { font-size: 15px; opacity: 0.85; max-width: 500px; }
+.eligibility-section { background: var(--amber-light); border: 1.5px solid #ffcc80; border-radius: var(--radius); padding: 24px; margin-bottom: 32px; }
+.eligibility-section h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--amber); margin-bottom: 14px; }
+.eligibility-section ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.eligibility-section ul li { font-size: 14px; color: #5d3a00; display: flex; align-items: flex-start; gap: 8px; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: 16px; padding: 36px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; position: relative; }
+.modal-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">🌿 GreenMarket</a>
+    <ul class="nav-links">
+      <li><a href="marketplace.html" data-t="nav_marketplace">Marketplace</a></li>
+      <li><a href="prices.html" data-t="nav_prices">Live Prices</a></li>
+      <li><a href="storage.html" data-t="nav_storage">Cold Storage</a></li>
+      <li><a href="rentals.html" data-t="nav_rentals">Rentals & Supplies</a></li>
+      <li><a href="schemes.html" class="active" data-t="nav_schemes">Gov Schemes</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost" data-t="nav_login">Login</a>
+      <a href="register.html" class="btn btn-primary" data-t="nav_join">Join Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="marketplace.html" data-t="nav_marketplace">Marketplace</a>
+    <a href="prices.html" data-t="nav_prices">Live Prices</a>
+    <a href="storage.html" data-t="nav_storage">Cold Storage</a>
+    <a href="rentals.html" data-t="nav_rentals">Rentals</a>
+    <a href="schemes.html" data-t="nav_schemes">Gov Schemes</a>
+  </div>
+</nav>
+
+<div class="page-hero" style="background:linear-gradient(135deg,#1a0040,#4a1080);">
+  <div class="container">
+    <h1>🏛️ Government Schemes for Farmers</h1>
+    <p>All Central & State Government schemes in one place. Check eligibility and apply directly online.</p>
+  </div>
+</div>
+
+<div class="container" style="padding:40px 24px 64px;">
+
+  <!-- HELPLINE -->
+  <div class="highlight-box">
+    <div class="hb-icon">📞</div>
+    <div class="hb-text">
+      <h2>Need Help Applying? Call Kisan Helpline</h2>
+      <p>Free expert guidance on which schemes you qualify for and how to apply. Available in Hindi, Punjabi, Marathi, Telugu, and Tamil.</p>
+      <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;">
+        <span style="background:rgba(255,255,255,0.2);padding:8px 18px;border-radius:8px;font-weight:700;font-size:16px;">📱 Kisan Call Centre: 1800-180-1551</span>
+        <span style="background:rgba(255,255,255,0.2);padding:8px 18px;border-radius:8px;font-weight:700;font-size:16px;">🌐 PM-Kisan: pmkisan.gov.in</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECK ELIGIBILITY -->
+  <div class="eligibility-section">
+    <h3>✅ Common Eligibility Requirements</h3>
+    <ul>
+      <li>✔️ Must be a registered farmer (land record required)</li>
+      <li>✔️ Valid Aadhar Card linked to bank account</li>
+      <li>✔️ Kisan Credit Card (for loan-related schemes)</li>
+      <li>✔️ Land ownership or tenancy proof</li>
+      <li>✔️ Bank account with IFSC code</li>
+      <li>✔️ Mobile number linked to Aadhar</li>
+      <li>✔️ Soil Health Card (for soil-related subsidies)</li>
+      <li>✔️ PM-Kisan registration (for income support)</li>
+    </ul>
+  </div>
+
+  <!-- FILTERS -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+    <div class="price-filters">
+      <button class="filter-btn active" onclick="setSchemeFilter(this,'')">All Schemes</button>
+      <button class="filter-btn" onclick="setSchemeFilter(this,'income')">💰 Income Support</button>
+      <button class="filter-btn" onclick="setSchemeFilter(this,'insurance')">🛡️ Insurance</button>
+      <button class="filter-btn" onclick="setSchemeFilter(this,'credit')">🏦 Credit & Loans</button>
+      <button class="filter-btn" onclick="setSchemeFilter(this,'input')">🌱 Input Subsidy</button>
+      <button class="filter-btn" onclick="setSchemeFilter(this,'infra')">🏗️ Infrastructure</button>
+    </div>
+    <select style="padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;margin-left:auto;">
+      <option>All (Central + State)</option>
+      <option>Central Govt Only</option>
+      <option>Punjab</option>
+      <option>Haryana</option>
+      <option>UP</option>
+      <option>Maharashtra</option>
+    </select>
+  </div>
+
+  <div class="scheme-grid" id="schemeGrid"></div>
+</div>
+
+<!-- APPLY MODAL -->
+<div class="modal-overlay" id="applyModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('applyModal').classList.remove('open')">✕</button>
+    <div class="form-title" id="applyTitle">Apply for Scheme</div>
+    <div class="alert alert-info">📋 Our team will verify your documents and help complete the application.</div>
+    <div class="form-group"><label>Aadhar Number *</label><input type="text" id="applyAadhar" placeholder="XXXX XXXX XXXX"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="applyName" placeholder="As on Aadhar"></div>
+      <div class="form-group"><label>Mobile (Linked to Aadhar) *</label><input type="tel" id="applyMobile" placeholder="+91 XXXXX XXXXX"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>State *</label>
+        <select><option>Punjab</option><option>Haryana</option><option>UP</option><option>Maharashtra</option><option>MP</option><option>Rajasthan</option><option>Gujarat</option></select>
+      </div>
+      <div class="form-group"><label>District *</label><input type="text" placeholder="Your district"></div>
+    </div>
+    <div class="form-group"><label>Land Holding (Acres) *</label><input type="number" placeholder="e.g. 3.5"></div>
+    <div class="form-group"><label>Bank Account Number *</label><input type="text" placeholder="For direct benefit transfer"></div>
+    <div class="form-group"><label>Bank IFSC Code *</label><input type="text" placeholder="e.g. SBIN0001234"></div>
+    <div class="form-group"><label>Documents to Upload</label>
+      <div style="background:var(--bg);border:1.5px dashed var(--border);border-radius:8px;padding:20px;text-align:center;color:var(--text-muted);font-size:14px;cursor:pointer;">
+        📎 Click to upload Aadhar, Land Record, Bank Passbook
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="submitApply()">🚀 Submit Application</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span>© 2025 GreenMarket — <a href="index.html" style="color:#a5d6a7;">Home</a></span>
+      <span>All scheme information sourced from official government portals</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+let currentSchemeFilter = '';
+let currentSchemes = [];
+let applySchemeId = null;
+
+function setSchemeFilter(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentSchemeFilter = cat;
+  renderSchemes();
+}
+
+async function renderSchemes() {
+  const grid = document.getElementById('schemeGrid');
+  const params = currentSchemeFilter ? `?category=${currentSchemeFilter}` : '';
+  try {
+    currentSchemes = await api(`/schemes${params}`);
+  } catch (e) {
+    grid.innerHTML = `<p style="color:var(--text-muted)">Couldn't load schemes: ${e.message}</p>`;
+    return;
+  }
+  grid.innerHTML = '';
+  currentSchemes.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'scheme-card';
+    card.innerHTML = `
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+        <div class="scheme-icon">${s.icon}</div>
+        <span style="background:${s.badge_color}20;color:${s.badge_color};padding:4px 12px;border-radius:100px;font-size:11px;font-weight:700;flex-shrink:0;">${s.badge}</span>
+      </div>
+      <div class="scheme-name">${s.name}</div>
+      <div class="scheme-full-name">${s.fullname}</div>
+      <div class="scheme-desc">${s.description}</div>
+      <div class="scheme-detail-grid">
+        <div class="sd-item"><div class="sd-label">Benefit</div><div class="sd-val" style="color:var(--green-mid);font-size:13px;">${s.benefit}</div></div>
+        <div class="sd-item"><div class="sd-label">Who Can Apply</div><div class="sd-val" style="font-size:12px;">${s.who_can_apply}</div></div>
+      </div>
+      <div class="scheme-tags">${s.tags.map(t=>`<span class="stag">${t}</span>`).join('')}</div>
+      <div class="scheme-footer">
+        <button onclick="openApply(${s.id},'${s.name.replace(/'/g,"\\'")}')" class="btn btn-primary" style="flex:1;padding:10px;">📝 Apply Now</button>
+        <button onclick="alert('Opening official government portal...')" class="btn btn-ghost" style="padding:10px 16px;">ℹ️ Details</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function openApply(id, name) {
+  applySchemeId = id;
+  document.getElementById('applyTitle').textContent = '📝 Apply: ' + name;
+  document.getElementById('applyModal').classList.add('open');
+}
+
+async function submitApply() {
+  const payload = {
+    aadhar: document.getElementById('applyAadhar').value.trim(),
+    full_name: document.getElementById('applyName').value.trim(),
+    mobile: document.getElementById('applyMobile').value.trim(),
+  };
+  if (!payload.aadhar || !payload.full_name || !payload.mobile) {
+    alert('Please fill in all required fields (*).');
+    return;
+  }
+  let application;
+  try {
+    application = await api(`/schemes/${applySchemeId}/apply`, { method: 'POST', body: JSON.stringify(payload) });
+  } catch (e) {
+    alert('Could not submit application: ' + e.message);
+    return;
+  }
+  document.getElementById('applyModal').classList.remove('open');
+  alert(`🎉 Application submitted! Our team will verify your documents and contact you within 48 hours. Application ID: ${application.application_id}`);
+}
+
+renderSchemes();
+</script>
+</body>
+</html>

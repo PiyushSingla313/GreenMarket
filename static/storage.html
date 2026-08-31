@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold Storage — GreenMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.storage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 28px; }
+.storage-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.2s; }
+.storage-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.storage-img { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 64px; }
+.storage-body { padding: 20px; }
+.storage-name { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.storage-loc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+.storage-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.spec { background: var(--bg); border-radius: 8px; padding: 10px 12px; }
+.spec-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+.spec-val { font-size: 16px; font-weight: 700; font-family: 'Syne', sans-serif; }
+.storage-crops { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.crop-tag { font-size: 11px; padding: 4px 10px; background: var(--sky-light); color: var(--sky); border-radius: 100px; font-weight: 600; }
+.avail-bar { height: 8px; background: var(--border); border-radius: 4px; margin-bottom: 6px; }
+.avail-fill { height: 100%; border-radius: 4px; background: var(--green-mid); }
+.avail-text { font-size: 12px; color: var(--text-muted); }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: 16px; padding: 36px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; position: relative; }
+.modal-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); }
+.info-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 32px 0; }
+.info-c { background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
+.info-c .ic-icon { font-size: 36px; margin-bottom: 10px; }
+.info-c h4 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.info-c p { font-size: 13px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">🌿 GreenMarket</a>
+    <ul class="nav-links">
+      <li><a href="marketplace.html" data-t="nav_marketplace">Marketplace</a></li>
+      <li><a href="prices.html" data-t="nav_prices">Live Prices</a></li>
+      <li><a href="storage.html" class="active" data-t="nav_storage">Cold Storage</a></li>
+      <li><a href="rentals.html" data-t="nav_rentals">Rentals & Supplies</a></li>
+      <li><a href="schemes.html" data-t="nav_schemes">Gov Schemes</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost" data-t="nav_login">Login</a>
+      <a href="register.html" class="btn btn-primary" data-t="nav_join">Join Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="marketplace.html" data-t="nav_marketplace">Marketplace</a>
+    <a href="prices.html" data-t="nav_prices">Live Prices</a>
+    <a href="storage.html" data-t="nav_storage">Cold Storage</a>
+    <a href="rentals.html" data-t="nav_rentals">Rentals</a>
+    <a href="schemes.html" data-t="nav_schemes">Gov Schemes</a>
+  </div>
+</nav>
+
+<div class="page-hero" style="background:linear-gradient(135deg,#0d2137,#1565c0);">
+  <div class="container">
+    <h1>❄️ Cold Storage Booking</h1>
+    <p>Find and book government & private cold storage units near you. Preserve your harvest and sell when prices peak.</p>
+  </div>
+</div>
+
+<div class="container" style="padding:40px 24px 64px;">
+
+  <!-- WHY COLD STORAGE -->
+  <div class="info-cards">
+    <div class="info-c"><div class="ic-icon">❄️</div><h4>Preserve Freshness</h4><p>Keep produce fresh for weeks or months at optimal temperatures.</p></div>
+    <div class="info-c"><div class="ic-icon">💰</div><h4>Sell at Peak Price</h4><p>Wait for the right price. Don't be forced to sell cheap at harvest time.</p></div>
+    <div class="info-c"><div class="ic-icon">📦</div><h4>Reduce Waste</h4><p>Up to 30% of produce is lost post-harvest. Cold storage prevents that.</p></div>
+    <div class="info-c"><div class="ic-icon">🏛️</div><h4>Government Subsidy</h4><p>Get up to 35% subsidy on cold storage rental via NHM scheme.</p></div>
+  </div>
+
+  <!-- SEARCH -->
+  <div style="background:var(--sky-light);border:1.5px solid #90caf9;border-radius:var(--radius);padding:24px;margin-bottom:32px;">
+    <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--sky);margin-bottom:16px;">🔍 Find Cold Storage Near You</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;flex-wrap:wrap;">
+      <div class="form-group" style="margin:0"><label>State</label>
+        <select id="storageStateFilter" onchange="renderStorage()">
+          <option value="">All States</option>
+          <option>Punjab</option><option>Haryana</option><option>UP</option><option>Maharashtra</option><option>MP</option><option>Rajasthan</option><option>Gujarat</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin:0"><label>Crop to Store</label>
+        <select id="storageCropFilter" onchange="renderStorage()">
+          <option value="">Any Crop</option>
+          <option>Potato</option><option>Onion</option><option>Tomato</option><option>Apple</option><option>Wheat</option><option>Rice</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin:0"><label>Quantity (Tons)</label>
+        <input type="number" id="storageQtyFilter" placeholder="e.g. 5">
+      </div>
+      <button class="btn btn-primary" style="height:44px;padding:0 24px;" onclick="renderStorage()">Search</button>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+    <h2 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;">Available Storage Units</h2>
+    <div class="price-filters">
+      <button class="filter-btn active" onclick="filterType(this,'all')">All</button>
+      <button class="filter-btn" onclick="filterType(this,'govt')">🏛️ Govt</button>
+      <button class="filter-btn" onclick="filterType(this,'private')">🏢 Private</button>
+    </div>
+  </div>
+
+  <div class="storage-grid" id="storageGrid"></div>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('bookModal').classList.remove('open')">✕</button>
+    <div class="form-title">📅 Book Cold Storage</div>
+    <div class="alert alert-info">✅ Booking confirmed instantly. Pay at facility on arrival.</div>
+    <div class="form-group"><label>Storage Unit</label><input type="text" id="bookingName" readonly style="background:#f5f5f5;"></div>
+    <div class="form-row">
+      <div class="form-group"><label>From Date *</label><input type="date" id="bookFrom"></div>
+      <div class="form-group"><label>To Date *</label><input type="date" id="bookTo"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Crop Name *</label><input type="text" id="bookCrop" placeholder="e.g. Potato"></div>
+      <div class="form-group"><label>Quantity (Tons) *</label><input type="number" id="bookQty" placeholder="5"></div>
+    </div>
+    <div class="form-group"><label>Your Name *</label><input type="text" id="bookName" placeholder="Full name"></div>
+    <div class="form-group"><label>Phone Number *</label><input type="tel" id="bookPhone" placeholder="+91 XXXXX XXXXX"></div>
+    <div class="form-group"><label>Special Requirements</label><textarea rows="2" id="bookNotes" placeholder="Temperature preference, packaging type..."></textarea></div>
+    <div style="background:var(--green-pale);border-radius:8px;padding:14px;margin-bottom:20px;font-size:13px;color:var(--green);">
+      💡 <strong>Tip:</strong> Apply for NHM cold storage subsidy to get up to 35% back. <a href="schemes.html" style="color:var(--green-mid);font-weight:600;">Check Schemes →</a>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="confirmBooking()">✅ Confirm Booking</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span>© 2025 GreenMarket — <a href="index.html" style="color:#a5d6a7;">Home</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+let currentType = 'all';
+let currentStorageList = [];
+let bookingStorageId = null;
+
+function filterType(btn, type) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentType = type;
+  renderStorage();
+}
+
+async function renderStorage() {
+  const grid = document.getElementById('storageGrid');
+  const params = new URLSearchParams();
+  if (currentType !== 'all') params.set('type', currentType);
+  const state = document.getElementById('storageStateFilter').value;
+  if (state) params.set('state', state);
+  const crop = document.getElementById('storageCropFilter').value;
+  if (crop) params.set('crop', crop);
+
+  try {
+    currentStorageList = await api(`/storage?${params.toString()}`);
+  } catch (e) {
+    grid.innerHTML = `<p style="color:var(--text-muted)">Couldn't load storage units: ${e.message}</p>`;
+    return;
+  }
+
+  const colors = ['#E3F2FD','#E8F5E9','#FFF3E0','#F3E5F5'];
+  grid.innerHTML = '';
+  currentStorageList.forEach((s, i) => {
+    const bgColor = colors[i % colors.length];
+    const availPct = Math.round((s.available_tons / s.capacity_tons) * 100);
+    const typeLabel = s.type === 'govt' ? '<span class="badge-blue">🏛️ Government</span>' : '<span class="badge-amber">🏢 Private</span>';
+    const card = document.createElement('div');
+    card.className = 'storage-card';
+    card.innerHTML = `
+      <div class="storage-img" style="background:${bgColor}">${s.image}</div>
+      <div class="storage-body">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px;">
+          <div class="storage-name">${s.name}</div>
+          ${typeLabel}
+        </div>
+        <div class="storage-loc">📍 ${s.district}, ${s.state}</div>
+        <div class="storage-specs">
+          <div class="spec"><div class="spec-label">Capacity</div><div class="spec-val">${s.capacity_tons}T</div></div>
+          <div class="spec"><div class="spec-label">Available</div><div class="spec-val" style="color:var(--green-mid)">${s.available_tons}T</div></div>
+          <div class="spec"><div class="spec-label">Temperature</div><div class="spec-val" style="font-size:13px;">${s.temp_range}</div></div>
+          <div class="spec"><div class="spec-label">Rate</div><div class="spec-val" style="font-size:13px;color:var(--amber)">${s.rate}</div></div>
+        </div>
+        <div class="storage-crops">${s.crops.map(c=>`<span class="crop-tag">${c}</span>`).join('')}</div>
+        <div class="avail-bar"><div class="avail-fill" style="width:${availPct}%"></div></div>
+        <div class="avail-text">${availPct}% space available • ⭐ ${s.rating}/5</div>
+        <button onclick="openBooking(${s.id})" class="btn btn-primary" style="width:100%;margin-top:14px;padding:10px;">📅 Book Now</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function openBooking(id) {
+  const s = currentStorageList.find(x => x.id === id);
+  bookingStorageId = id;
+  document.getElementById('bookingName').value = s ? s.name : '';
+  document.getElementById('bookModal').classList.add('open');
+}
+
+async function confirmBooking() {
+  const payload = {
+    from_date: document.getElementById('bookFrom').value,
+    to_date: document.getElementById('bookTo').value,
+    crop: document.getElementById('bookCrop').value.trim(),
+    quantity_tons: parseFloat(document.getElementById('bookQty').value),
+    name: document.getElementById('bookName').value.trim(),
+    phone: document.getElementById('bookPhone').value.trim(),
+    special_requirements: document.getElementById('bookNotes').value.trim() || null,
+  };
+  if (!payload.from_date || !payload.to_date || !payload.crop || !payload.quantity_tons || !payload.name || !payload.phone) {
+    alert('Please fill in all required fields (*).');
+    return;
+  }
+  let booking;
+  try {
+    booking = await api(`/storage/${bookingStorageId}/book`, { method: 'POST', body: JSON.stringify(payload) });
+  } catch (e) {
+    alert('Could not confirm booking: ' + e.message);
+    return;
+  }
+  document.getElementById('bookModal').classList.remove('open');
+  alert(`🎉 Booking confirmed! You will receive an SMS with booking details. Please carry this reference number: ${booking.reference_id}`);
+  renderStorage();
+}
+
+renderStorage();
+</script>
+</body>
+</html>

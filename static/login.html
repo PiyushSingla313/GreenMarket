@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — GreenMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">🌿 GreenMarket</a>
+    <ul class="nav-links">
+      <li><a href="marketplace.html" data-t="nav_marketplace">Marketplace</a></li>
+      <li><a href="prices.html" data-t="nav_prices">Live Prices</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="register.html" class="btn btn-primary" data-t="nav_join">Join Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="register.html">Register</a>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div style="font-size:48px;margin-bottom:8px;">🌿</div>
+      <div class="logo" style="justify-content:center;font-size:22px;">GreenMarket</div>
+    </div>
+    <h1 class="auth-title">Welcome Back</h1>
+    <p class="auth-sub">Login to your GreenMarket account</p>
+    <div class="form-group"><label>Mobile Number</label><input type="text" id="loginMobile" placeholder="+91 XXXXX XXXXX"></div>
+    <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Enter your password"></div>
+    <div style="display:flex;justify-content:flex-end;margin:-10px 0 20px;">
+      <a href="#" style="font-size:13px;color:var(--green-mid);font-weight:600;">Forgot Password?</a>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:16px;" onclick="doLogin()">Login →</button>
+    <div style="text-align:center;margin:20px 0;color:var(--text-muted);font-size:13px;">— or login with —</div>
+    <button style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:8px;background:#fff;font-size:14px;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <span style="font-size:18px;">📱</span> Login with OTP (Mobile)
+    </button>
+    <div class="auth-footer" style="margin-top:20px;">New to GreenMarket? <a href="register.html">Create free account</a></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+async function doLogin() {
+  const mobile = document.getElementById('loginMobile').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!mobile || !password) { alert('Please enter your mobile number and password.'); return; }
+  let result;
+  try {
+    result = await api('/auth/login', { method: 'POST', body: JSON.stringify({ mobile, password }) });
+  } catch (e) {
+    alert('Login failed: ' + e.message);
+    return;
+  }
+  setSession(result.access_token, result.user);
+  alert(`✅ Login successful! Welcome back, ${result.user.full_name}.`);
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

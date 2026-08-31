@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+greenmarket.db
+.env
+server.log

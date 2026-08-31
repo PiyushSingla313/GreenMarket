@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — GreenMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">🌿 GreenMarket</a>
+    <ul class="nav-links">
+      <li><a href="marketplace.html" data-t="nav_marketplace">Marketplace</a></li>
+      <li><a href="prices.html" data-t="nav_prices">Live Prices</a></li>
+      <li><a href="storage.html" data-t="nav_storage">Cold Storage</a></li>
+      <li><a href="rentals.html" data-t="nav_rentals">Rentals &amp; Supplies</a></li>
+      <li><a href="schemes.html" data-t="nav_schemes">Gov Schemes</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost" data-t="nav_login">Login</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="prices.html">Live Prices</a>
+    <a href="login.html">Login</a>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div style="font-size:48px;margin-bottom:8px;">🌿</div>
+      <div class="logo" style="justify-content:center;font-size:22px;">GreenMarket</div>
+    </div>
+    <h1 class="auth-title">Create Account</h1>
+    <p class="auth-sub">Join 12,400+ farmers. Free forever.</p>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="setType(this,'farmer')">👨‍🌾 Farmer</div>
+      <div class="auth-tab" onclick="setType(this,'buyer')">🏪 Buyer</div>
+      <div class="auth-tab" onclick="setType(this,'storage')">❄️ Storage Owner</div>
+    </div>
+
+    <div class="form-group"><label>Full Name *</label><input type="text" id="regName" placeholder="As on Aadhar card"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Mobile Number *</label><input type="tel" id="regMobile" placeholder="+91 XXXXX XXXXX"></div>
+      <div class="form-group"><label>State *</label>
+        <select id="regState">
+          <option value="">Select State</option>
+          <option>Punjab</option><option>Haryana</option><option>Uttar Pradesh</option>
+          <option>Maharashtra</option><option>Madhya Pradesh</option><option>Rajasthan</option>
+          <option>Gujarat</option><option>Andhra Pradesh</option><option>Karnataka</option>
+          <option>Tamil Nadu</option><option>Bihar</option><option>West Bengal</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" id="farmerFields">
+      <label>Land Holding (Acres)</label>
+      <input type="number" id="regLand" placeholder="e.g. 5">
+    </div>
+    <div class="form-group"><label>Aadhar Number *</label><input type="text" id="regAadhar" placeholder="XXXX XXXX XXXX" maxlength="14"></div>
+    <div class="form-group"><label>Create Password *</label><input type="password" id="regPassword" placeholder="Minimum 6 characters"></div>
+    <div class="form-group"><label>Confirm Password *</label><input type="password" id="regConfirmPassword" placeholder="Re-enter password"></div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">
+      By registering, you agree to our <a href="#" style="color:var(--green-mid);">Terms of Service</a> and <a href="#" style="color:var(--green-mid);">Privacy Policy</a>.
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:16px;" onclick="doRegister()">🚀 Create Free Account</button>
+    <div class="auth-footer">Already have an account? <a href="login.html">Login here</a></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+const ROLE_MAP = { farmer: 'farmer', buyer: 'buyer', storage: 'storage_owner' };
+let currentType = 'farmer';
+
+function setType(el, type) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentType = type;
+  document.getElementById('farmerFields').style.display = type === 'farmer' ? 'block' : 'none';
+}
+
+async function doRegister() {
+  const password = document.getElementById('regPassword').value;
+  const confirmPassword = document.getElementById('regConfirmPassword').value;
+  if (password !== confirmPassword) { alert('Passwords do not match.'); return; }
+  if (password.length < 6) { alert('Password must be at least 6 characters.'); return; }
+
+  const payload = {
+    full_name: document.getElementById('regName').value.trim(),
+    mobile: document.getElementById('regMobile').value.trim(),
+    aadhar: document.getElementById('regAadhar').value.trim() || null,
+    password,
+    role: ROLE_MAP[currentType] || 'farmer',
+    state: document.getElementById('regState').value || null,
+    land_holding_acres: (currentType === 'farmer' && document.getElementById('regLand').value)
+      ? parseFloat(document.getElementById('regLand').value) : null,
+  };
+  if (!payload.full_name || !payload.mobile) {
+    alert('Please fill in all required fields (*).');
+    return;
+  }
+
+  let result;
+  try {
+    result = await api('/auth/register', { method: 'POST', body: JSON.stringify(payload) });
+  } catch (e) {
+    alert('Could not create account: ' + e.message);
+    return;
+  }
+  setSession(result.access_token, result.user);
+  alert('🎉 Account created successfully! Welcome to GreenMarket. Redirecting to your dashboard...');
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

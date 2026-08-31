@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace — GreenMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.mp-layout { display: flex; gap: 28px; align-items: flex-start; }
+.mp-sidebar {
+  width: 260px; flex-shrink: 0;
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  position: sticky; top: 80px;
+}
+.mp-sidebar h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+.mp-sidebar .filter-group { margin-bottom: 22px; }
+.mp-sidebar label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+.mp-sidebar select, .mp-sidebar input[type=range] { width: 100%; }
+.mp-sidebar input[type=range] { accent-color: var(--green-mid); }
+.range-vals { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.mp-main { flex: 1; min-width: 0; }
+.mp-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.mp-topbar h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
+.mp-search { display: flex; gap: 10px; flex: 1; max-width: 380px; }
+.mp-search input { flex: 1; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'DM Sans', sans-serif; }
+.mp-search input:focus { outline: none; border-color: var(--green-mid); }
+.sell-banner {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  border-radius: var(--radius); padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px; color: #fff; flex-wrap: wrap; gap: 12px;
+}
+.sell-banner h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.sell-banner p { font-size: 13px; opacity: 0.8; }
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 2000;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white); border-radius: 16px;
+  padding: 36px; width: 100%; max-width: 540px;
+  max-height: 90vh; overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 18px;
+  background: none; border: none; font-size: 22px;
+  cursor: pointer; color: var(--text-muted);
+}
+.contact-modal { max-width: 400px; }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">🌿 GreenMarket</a>
+    <ul class="nav-links">
+      <li><a href="marketplace.html" class="active" data-t="nav_marketplace">Marketplace</a></li>
+      <li><a href="prices.html" data-t="nav_prices">Live Prices</a></li>
+      <li><a href="storage.html" data-t="nav_storage">Cold Storage</a></li>
+      <li><a href="rentals.html" data-t="nav_rentals">Rentals & Supplies</a></li>
+      <li><a href="schemes.html" data-t="nav_schemes">Gov Schemes</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost" data-t="nav_login">Login</a>
+      <a href="register.html" class="btn btn-primary" data-t="nav_join">Join Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="marketplace.html" data-t="nav_marketplace">Marketplace</a>
+    <a href="prices.html" data-t="nav_prices">Live Prices</a>
+    <a href="storage.html" data-t="nav_storage">Cold Storage</a>
+    <a href="rentals.html" data-t="nav_rentals">Rentals</a>
+    <a href="schemes.html" data-t="nav_schemes">Gov Schemes</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <h1>🛒 Crop Marketplace</h1>
+    <p>Buy directly from farmers. No middlemen, guaranteed fresh produce at fair prices.</p>
+  </div>
+</div>
+
+<div class="container" style="padding-top:36px; padding-bottom:64px;">
+  <div class="mp-layout">
+    <!-- SIDEBAR -->
+    <aside class="mp-sidebar">
+      <h3>🔍 Filter Listings</h3>
+      <div class="filter-group">
+        <label>Crop Category</label>
+        <select onchange="filterListings()">
+          <option value="">All Crops</option>
+          <option>Grains & Cereals</option>
+          <option>Vegetables</option>
+          <option>Fruits</option>
+          <option>Pulses & Lentils</option>
+          <option>Oilseeds</option>
+          <option>Spices</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>State</label>
+        <select id="stateFilter" onchange="filterListings()">
+          <option value="">All States</option>
+          <option>Punjab</option>
+          <option>Haryana</option>
+          <option value="UP">Uttar Pradesh</option>
+          <option>Maharashtra</option>
+          <option value="MP">Madhya Pradesh</option>
+          <option>Rajasthan</option>
+          <option>Gujarat</option>
+          <option value="AP">Andhra Pradesh</option>
+          <option>Karnataka</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Quality</label>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;">
+          <label style="text-transform:none;letter-spacing:0;font-size:14px;font-weight:400;display:flex;align-items:center;gap:8px;"><input type="checkbox" checked> Verified Organic</label>
+          <label style="text-transform:none;letter-spacing:0;font-size:14px;font-weight:400;display:flex;align-items:center;gap:8px;"><input type="checkbox" checked> Premium Grade</label>
+          <label style="text-transform:none;letter-spacing:0;font-size:14px;font-weight:400;display:flex;align-items:center;gap:8px;"><input type="checkbox" checked> Standard Grade</label>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Sort By</label>
+        <select id="sortFilter" onchange="filterListings()">
+          <option value="newest">Newest First</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="qty_desc">Quantity: High to Low</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" style="width:100%;" onclick="filterListings()">Apply Filters</button>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="mp-main">
+      <div class="sell-banner">
+        <div>
+          <h3>Sell Your Crops Here</h3>
+          <p>List for free in 2 minutes. Reach 8,000+ buyers across India.</p>
+        </div>
+        <button class="btn btn-hero-ghost" onclick="document.getElementById('sellModal').classList.add('open')">+ List Now</button>
+      </div>
+
+      <div class="mp-topbar">
+        <h2>All Listings <span style="color:var(--text-muted);font-size:15px;font-weight:400;" id="count"></span></h2>
+        <div class="mp-search">
+          <input type="text" placeholder="Search crops..." id="searchInput" oninput="filterListings()">
+        </div>
+      </div>
+
+      <div class="price-filters" id="catFilters">
+        <button class="filter-btn active" onclick="setCategory(this,'')">All</button>
+        <button class="filter-btn" onclick="setCategory(this,'grain')">🌾 Grains</button>
+        <button class="filter-btn" onclick="setCategory(this,'veg')">🥦 Vegetables</button>
+        <button class="filter-btn" onclick="setCategory(this,'fruit')">🍎 Fruits</button>
+        <button class="filter-btn" onclick="setCategory(this,'pulse')">🫘 Pulses</button>
+        <button class="filter-btn" onclick="setCategory(this,'oil')">🌻 Oilseeds</button>
+      </div>
+
+      <div class="listing-grid" id="mpGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SELL MODAL -->
+<div class="modal-overlay" id="sellModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('sellModal').classList.remove('open')">✕</button>
+    <div class="form-title">📦 List Your Crop</div>
+    <div class="alert alert-info">✅ Free listing. No commission charged.</div>
+    <div class="form-group"><label>Crop Name *</label><input type="text" id="sellCrop" placeholder="e.g. Wheat, Tomato, Basmati Rice"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Quantity *</label><input type="number" id="sellQty" placeholder="e.g. 50"></div>
+      <div class="form-group"><label>Unit</label><select id="sellUnit"><option>Quintal</option><option>Kg</option><option>Ton</option><option>Bag</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Your Price (₹) *</label><input type="number" id="sellPrice" placeholder="0.00"></div>
+      <div class="form-group"><label>Price Per</label><select id="sellPricePer"><option>Quintal</option><option>Kg</option><option>Ton</option></select></div>
+    </div>
+    <div class="form-group"><label>Crop Category *</label>
+      <select id="sellCategory">
+        <option value="grain">Grains & Cereals</option>
+        <option value="veg">Vegetables</option>
+        <option value="fruit">Fruits</option>
+        <option value="pulse">Pulses & Lentils</option>
+        <option value="oil">Oilseeds</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Quality Grade</label><select id="sellGrade"><option>A Grade (Premium)</option><option>B Grade (Standard)</option><option>Organic Certified</option></select></div>
+    <div class="form-row">
+      <div class="form-group"><label>State *</label><select id="sellState"><option>Punjab</option><option>Haryana</option><option>UP</option><option>Maharashtra</option><option>MP</option></select></div>
+      <div class="form-group"><label>District *</label><input type="text" id="sellDistrict" placeholder="e.g. Ludhiana"></div>
+    </div>
+    <div class="form-group"><label>Description (optional)</label><textarea rows="3" id="sellDesc" placeholder="Describe quality, harvest date, storage condition..."></textarea></div>
+    <div class="form-group"><label>Your Name *</label><input type="text" id="sellFarmerName" placeholder="Full name"></div>
+    <div class="form-group"><label>Contact Number *</label><input type="tel" id="sellPhone" placeholder="+91 XXXXX XXXXX"></div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="submitListing()">🚀 Submit Listing Free</button>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal contact-modal">
+    <button class="modal-close" onclick="document.getElementById('contactModal').classList.remove('open')">✕</button>
+    <div class="form-title" id="contactCrop">Contact Farmer</div>
+    <div class="alert alert-success">🔒 Your info is shared only with this farmer.</div>
+    <div class="form-group"><label>Your Name *</label><input type="text" id="contactName" placeholder="Full name"></div>
+    <div class="form-group"><label>Phone Number *</label><input type="tel" id="contactPhone" placeholder="+91 XXXXX XXXXX"></div>
+    <div class="form-group"><label>Quantity Needed</label><input type="text" id="contactQty" placeholder="e.g. 20 Quintals"></div>
+    <div class="form-group"><label>Message</label><textarea rows="3" id="contactMsg" placeholder="Your offer price, pickup preference..."></textarea></div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="sendContact()">📲 Send Enquiry</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span>© 2025 GreenMarket — <a href="index.html" style="color:#a5d6a7;">Home</a></span>
+      <span>Free forever for farmers 🌾</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+let currentCat = '';
+let currentListings = [];
+let contactListingId = null;
+
+function setCategory(btn, cat) {
+  document.querySelectorAll('#catFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat = cat;
+  filterListings();
+}
+
+async function filterListings() {
+  const q = document.getElementById('searchInput').value.trim();
+  const state = document.getElementById('stateFilter') ? document.getElementById('stateFilter').value : '';
+  const sort = document.getElementById('sortFilter') ? document.getElementById('sortFilter').value : 'newest';
+  const params = new URLSearchParams();
+  if (currentCat) params.set('category', currentCat);
+  if (state) params.set('state', state);
+  if (q) params.set('search', q);
+  params.set('sort', sort);
+
+  const grid = document.getElementById('mpGrid');
+  try {
+    currentListings = await api(`/listings?${params.toString()}`);
+  } catch (e) {
+    grid.innerHTML = `<p style="color:var(--text-muted)">Couldn't load listings: ${e.message}</p>`;
+    return;
+  }
+  renderListings(currentListings);
+}
+
+function renderListings(list) {
+  const grid = document.getElementById('mpGrid');
+  document.getElementById('count').textContent = `(${list.length})`;
+  grid.innerHTML = '';
+  const colors = { Organic:'#2e7d32', Premium:'#6a1b9a', Verified:'#1565c0', Fresh:'#e65100' };
+  list.forEach(l => {
+    const c = colors[l.badge] || '#444';
+    const card = document.createElement('div');
+    card.className = 'listing-card';
+    card.style.cursor = 'default';
+    card.innerHTML = `
+      <div class="listing-img">${l.image}</div>
+      <div class="listing-body">
+        <div class="listing-top">
+          <h3>${l.crop}</h3>
+          <span class="listing-badge" style="background:${c}20;color:${c}">${l.badge || ''}</span>
+        </div>
+        <p class="listing-qty">${l.quantity} ${l.unit} available</p>
+        <p class="listing-price">₹${l.price.toLocaleString()}/${l.price_per}</p>
+        <div class="listing-foot">
+          <span>📍 ${l.district}, ${l.state}</span>
+        </div>
+        <div style="margin-top:4px;font-size:12px;color:var(--text-muted)">👨‍🌾 ${l.farmer_name}</div>
+        <button onclick="openContact(${l.id},'${l.crop.replace(/'/g,"\\'")}')" class="btn btn-primary" style="width:100%;margin-top:14px;padding:10px;">📞 Contact Farmer</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function openContact(id, crop) {
+  contactListingId = id;
+  document.getElementById('contactCrop').textContent = `Contact Farmer — ${crop}`;
+  document.getElementById('contactModal').classList.add('open');
+}
+
+async function sendContact() {
+  const name = document.getElementById('contactName').value.trim();
+  const phone = document.getElementById('contactPhone').value.trim();
+  if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+  try {
+    await api(`/listings/${contactListingId}/contact`, {
+      method: 'POST',
+      body: JSON.stringify({
+        name, phone,
+        quantity_needed: document.getElementById('contactQty').value.trim() || null,
+        message: document.getElementById('contactMsg').value.trim() || null,
+      }),
+    });
+  } catch (e) {
+    alert('Could not send enquiry: ' + e.message);
+    return;
+  }
+  document.getElementById('contactModal').classList.remove('open');
+  alert('✅ Enquiry sent! The farmer will contact you shortly.');
+}
+
+async function submitListing() {
+  const payload = {
+    crop: document.getElementById('sellCrop').value.trim(),
+    quantity: parseFloat(document.getElementById('sellQty').value),
+    unit: document.getElementById('sellUnit').value,
+    price: parseFloat(document.getElementById('sellPrice').value),
+    price_per: document.getElementById('sellPricePer').value,
+    category: document.getElementById('sellCategory').value,
+    state: document.getElementById('sellState').value,
+    district: document.getElementById('sellDistrict').value.trim(),
+    description: document.getElementById('sellDesc').value.trim() || null,
+    phone: document.getElementById('sellPhone').value.trim(),
+    farmer_name: document.getElementById('sellFarmerName').value.trim(),
+  };
+  if (!payload.crop || !payload.quantity || !payload.price || !payload.district || !payload.phone || !payload.farmer_name) {
+    alert('Please fill in all required fields (*).');
+    return;
+  }
+  try {
+    await api('/listings', { method: 'POST', body: JSON.stringify(payload) });
+  } catch (e) {
+    alert('Could not submit listing: ' + e.message);
+    return;
+  }
+  document.getElementById('sellModal').classList.remove('open');
+  alert('🎉 Listing submitted! It is now live on the marketplace.');
+  filterListings();
+}
+
+filterListings();
+</script>
+</body>
+</html>

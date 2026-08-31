@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenMarket — Farmer's Digital Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-leaf">🌿</span>
+      <span>GreenMarket</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="marketplace.html" data-t="nav_marketplace">Marketplace</a></li>
+      <li><a href="prices.html" data-t="nav_prices">Live Prices</a></li>
+      <li><a href="storage.html" data-t="nav_storage">Cold Storage</a></li>
+      <li><a href="rentals.html" data-t="nav_rentals">Rentals &amp; Supplies</a></li>
+      <li><a href="schemes.html" data-t="nav_schemes">Gov Schemes</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost" data-t="nav_login">Login</a>
+      <a href="register.html" class="btn btn-primary" data-t="nav_join">Join Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="marketplace.html" data-t="nav_marketplace">Marketplace</a>
+    <a href="prices.html" data-t="nav_prices">Live Prices</a>
+    <a href="storage.html" data-t="nav_storage">Cold Storage</a>
+    <a href="rentals.html" data-t="nav_rentals">Rentals &amp; Supplies</a>
+    <a href="schemes.html" data-t="nav_schemes">Gov Schemes</a>
+    <a href="login.html" data-t="nav_login">Login</a>
+    <a href="register.html" data-t="nav_join">Join Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge" data-t="hero_badge">🇮🇳 Made for Indian Farmers</div>
+    <h1 class="hero-title">
+      <span data-t="hero_title_1">Sell Your Crops</span><br>
+      <em data-t="hero_title_em">Directly.</em> <span data-t="hero_title_2">No Middleman.</span>
+    </h1>
+    <p class="hero-sub" data-t="hero_sub">Connect with buyers across India, track live mandi prices, book cold storage, rent machinery, and access government schemes — all in one place.</p>
+    <div class="hero-btns">
+      <a href="register.html" class="btn btn-hero-primary" data-t="hero_btn1">Start Selling Free</a>
+      <a href="prices.html" class="btn btn-hero-ghost" data-t="hero_btn2">View Live Prices →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-n">12,400+</span><span class="stat-l" data-t="hero_stat1">Farmers</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n">₹3.2Cr+</span><span class="stat-l" data-t="hero_stat2">Trade Volume</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n">28</span><span class="stat-l" data-t="hero_stat3">States</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="floating-card fc1">
+      <span class="fc-icon">📈</span>
+      <div>
+        <div class="fc-label">Wheat Price</div>
+        <div class="fc-value">₹2,180<span class="fc-up">+4.2%</span></div>
+      </div>
+    </div>
+    <div class="floating-card fc2">
+      <span class="fc-icon">🚜</span>
+      <div>
+        <div class="fc-label">Tractor available</div>
+        <div class="fc-value">₹1,200<span class="fc-tag">/ day</span></div>
+      </div>
+    </div>
+    <div class="floating-card fc3">
+      <span class="fc-icon">❄️</span>
+      <div>
+        <div class="fc-label">Cold Storage</div>
+        <div class="fc-value">3 units near you</div>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <div class="hero-circle"></div>
+      <div class="hero-field-text">YOUR FARM<br>YOUR PRICE<br>YOUR PROFIT</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<section class="features-strip">
+  <div class="container">
+    <div class="features-grid">
+      <a href="marketplace.html" class="feature-card">
+        <div class="feature-icon" style="background:#e8f5e9;">🛒</div>
+        <h3 data-t="feat_mp">Direct Marketplace</h3>
+        <p data-t="feat_mp_sub">List crops, set your price, connect with buyers directly across India.</p>
+        <span class="feature-link" data-t="feat_mp_link">Open Marketplace →</span>
+      </a>
+      <a href="prices.html" class="feature-card">
+        <div class="feature-icon" style="background:#fff3e0;">📊</div>
+        <h3 data-t="feat_price">Live Mandi Prices</h3>
+        <p data-t="feat_price_sub">Real-time crop prices from 500+ mandis. Know your crop's worth today.</p>
+        <span class="feature-link" data-t="feat_price_link">Check Prices →</span>
+      </a>
+      <a href="storage.html" class="feature-card">
+        <div class="feature-icon" style="background:#e3f2fd;">❄️</div>
+        <h3 data-t="feat_store">Cold Storage</h3>
+        <p data-t="feat_store_sub">Book nearby cold storage units. Preserve your harvest, sell at the right time.</p>
+        <span class="feature-link" data-t="feat_store_link">Find Storage →</span>
+      </a>
+      <a href="rentals.html" class="feature-card">
+        <div class="feature-icon" style="background:#fce4ec;">🚜</div>
+        <h3 data-t="feat_rent">Rent Machinery</h3>
+        <p data-t="feat_rent_sub">Rent tractors, harvesters, and more. Also buy pesticides and seeds.</p>
+        <span class="feature-link" data-t="feat_rent_link">Browse Rentals →</span>
+      </a>
+      <a href="schemes.html" class="feature-card">
+        <div class="feature-icon" style="background:#f3e5f5;">🏛️</div>
+        <h3 data-t="feat_scheme">Government Schemes</h3>
+        <p data-t="feat_scheme_sub">All central &amp; state farmer schemes in one place. Apply directly online.</p>
+        <span class="feature-link" data-t="feat_scheme_link">View Schemes →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE TICKER -->
+<section class="ticker-section">
+  <div class="ticker-label">LIVE PRICES</div>
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span>🌾 Wheat ₹2,180/q <span class="up">▲4.2%</span></span>
+      <span>🌽 Maize ₹1,890/q <span class="up">▲2.1%</span></span>
+      <span>🍅 Tomato ₹42/kg <span class="down">▼1.5%</span></span>
+      <span>🧅 Onion ₹28/kg <span class="up">▲6.8%</span></span>
+      <span>🌾 Rice ₹3,100/q <span class="up">▲1.2%</span></span>
+      <span>🫘 Soybean ₹4,200/q <span class="down">▼0.8%</span></span>
+      <span>🥔 Potato ₹18/kg <span class="up">▲3.4%</span></span>
+      <span>🌻 Sunflower ₹5,800/q <span class="up">▲2.9%</span></span>
+      <span>🫙 Mustard ₹5,200/q <span class="down">▼1.1%</span></span>
+      <span>🌾 Wheat ₹2,180/q <span class="up">▲4.2%</span></span>
+      <span>🌽 Maize ₹1,890/q <span class="up">▲2.1%</span></span>
+      <span>🍅 Tomato ₹42/kg <span class="down">▼1.5%</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- RECENT LISTINGS -->
+<section class="section" id="listings">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="section-eyebrow" data-t="listings_eyebrow">MARKETPLACE</p>
+        <h2 data-t="listings_title">Fresh Listings Today</h2>
+      </div>
+      <a href="marketplace.html" class="btn btn-outline" data-t="listings_viewall">View All →</a>
+    </div>
+    <div class="listing-grid" id="listingGrid"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-head centered">
+      <p class="section-eyebrow" data-t="how_eyebrow">HOW IT WORKS</p>
+      <h2 data-t="how_title">From Farm to Buyer in 3 Steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3 data-t="step1_title">Register &amp; List</h3>
+        <p data-t="step1_desc">Create your free account. List your crops with quantity, quality, and your asking price.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3 data-t="step2_title">Buyers Contact You</h3>
+        <p data-t="step2_desc">Verified buyers from across India see your listing and contact you directly. No commission.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3 data-t="step3_title">Get Paid Directly</h3>
+        <p data-t="step3_desc">Negotiate, agree, and receive payment directly to your bank account. Full profit is yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="container">
+    <div class="section-head centered">
+      <p class="section-eyebrow" data-t="testi_eyebrow">FARMER STORIES</p>
+      <h2 data-t="testi_title">Farmers Who Earn More</h2>
+    </div>
+    <div class="testimonials">
+      <div class="testimonial">
+        <p class="quote">"Pehle aadha paisa dalal le jaata tha. Ab seedha buyer se baat karta hoon. Is saal 40% zyada mila."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">RS</div>
+          <div><strong>Ramesh Singh</strong><span>Wheat Farmer, Punjab</span></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="quote">"Cold storage book karna bahut aasaan hai. Maine tomatoes 3 hafte baad becha jab price badha — ₹18 se ₹45/kg ho gaya."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">PD</div>
+          <div><strong>Priya Devi</strong><span>Vegetable Farmer, Maharashtra</span></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="quote">"Government schemes ke baare mein pata hi nahi tha. GreenMarket se PM-KISAN aur crop insurance dono apply kar diya."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MK</div>
+          <div><strong>Mahesh Kumar</strong><span>Rice Farmer, UP</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <div class="container">
+    <h2 data-t="cta_title">Ready to earn what your crops deserve?</h2>
+    <p data-t="cta_sub">Join 12,400+ farmers already selling directly. Free forever for farmers.</p>
+    <div class="cta-btns">
+      <a href="register.html" class="btn btn-hero-primary" data-t="cta_btn1">Register as Farmer</a>
+      <a href="register.html?type=buyer" class="btn btn-hero-ghost" data-t="cta_btn2">Register as Buyer</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">🌿 GreenMarket</div>
+        <p data-t="footer_tagline">Empowering farmers with technology. No middlemen, no commissions, just fair prices.</p>
+      </div>
+      <div class="footer-links">
+        <h4 data-t="footer_platform">Platform</h4>
+        <a href="marketplace.html" data-t="nav_marketplace">Marketplace</a>
+        <a href="prices.html" data-t="nav_prices">Live Prices</a>
+        <a href="storage.html" data-t="nav_storage">Cold Storage</a>
+        <a href="rentals.html" data-t="nav_rentals">Rentals</a>
+        <a href="schemes.html" data-t="nav_schemes">Gov Schemes</a>
+      </div>
+      <div class="footer-links">
+        <h4 data-t="footer_support">Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+      <div class="footer-links">
+        <h4 data-t="footer_connect">Connect</h4>
+        <a href="#">WhatsApp Community</a>
+        <a href="#">YouTube Channel</a>
+        <a href="#">Facebook</a>
+        <a href="#">Helpline: 1800-XXX-XXXX</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-t="footer_copy">© 2025 GreenMarket. Made with ❤️ for Indian Farmers.</span>
+      <span data-t="footer_langs">Available in: Hindi • Punjabi • Marathi • Telugu • Tamil</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+async function loadHomeListings() {
+  const grid = document.getElementById('listingGrid');
+  let listings;
+  try {
+    listings = await api('/listings?sort=newest');
+  } catch (e) {
+    grid.innerHTML = `<p style="color:var(--text-muted)">Couldn't load listings right now.</p>`;
+    return;
+  }
+  const badgeColorFor = b => b==='Organic'?'#2e7d32':b==='Premium'?'#6a1b9a':b==='Fresh'?'#e65100':'#1565c0';
+  grid.innerHTML = '';
+  listings.slice(0, 6).forEach(l => {
+    const card = document.createElement('a');
+    card.href = 'marketplace.html';
+    card.className = 'listing-card';
+    const badgeColor = badgeColorFor(l.badge);
+    card.innerHTML = `
+      <div class="listing-img">${l.image}</div>
+      <div class="listing-body">
+        <div class="listing-top">
+          <h3>${l.crop}</h3>
+          <span class="listing-badge" style="background:${badgeColor}20;color:${badgeColor}">${l.badge || ''}</span>
+        </div>
+        <p class="listing-qty">${l.quantity} ${l.unit} available</p>
+        <p class="listing-price">₹${l.price.toLocaleString()}/${l.price_per}</p>
+        <div class="listing-foot">
+          <span>📍 ${l.district}, ${l.state}</span>
+          <span>👨‍🌾 ${l.farmer_name}</span>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+loadHomeListings();
+</script>
+</body>
+</html>

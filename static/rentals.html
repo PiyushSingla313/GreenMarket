@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rentals & Supplies — GreenMarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.rental-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+.rental-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.2s; }
+.rental-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.rental-img { height: 110px; display: flex; align-items: center; justify-content: center; font-size: 56px; }
+.rental-body { padding: 18px; }
+.rental-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.rental-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5; }
+.rental-price { font-size: 20px; font-weight: 700; color: var(--green-mid); margin-bottom: 4px; }
+.rental-avail { font-size: 12px; margin-bottom: 14px; }
+.supply-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 18px; transition: all 0.2s; display: flex; flex-direction: column; }
+.supply-card:hover { box-shadow: var(--shadow-md); }
+.supply-icon { font-size: 36px; margin-bottom: 10px; }
+.supply-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.supply-brand { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+.supply-price { font-size: 18px; font-weight: 700; color: var(--green-mid); }
+.supply-old { font-size: 13px; color: var(--text-muted); text-decoration: line-through; margin-left: 6px; }
+.supply-discount { font-size: 12px; color: #c62828; font-weight: 600; margin-left: 6px; }
+.supply-details { font-size: 13px; color: var(--text-muted); margin: 8px 0 14px; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: 16px; padding: 36px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; }
+.modal-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); }
+.tab-nav { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 32px; }
+.tab-nav-btn { padding: 12px 28px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; background: none; color: var(--text-muted); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+.tab-nav-btn.active { color: var(--green-mid); border-bottom-color: var(--green-mid); }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">🌿 GreenMarket</a>
+    <ul class="nav-links">
+      <li><a href="marketplace.html" data-t="nav_marketplace">Marketplace</a></li>
+      <li><a href="prices.html" data-t="nav_prices">Live Prices</a></li>
+      <li><a href="storage.html" data-t="nav_storage">Cold Storage</a></li>
+      <li><a href="rentals.html" class="active" data-t="nav_rentals">Rentals & Supplies</a></li>
+      <li><a href="schemes.html" data-t="nav_schemes">Gov Schemes</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost" data-t="nav_login">Login</a>
+      <a href="register.html" class="btn btn-primary" data-t="nav_join">Join Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="marketplace.html" data-t="nav_marketplace">Marketplace</a>
+    <a href="prices.html" data-t="nav_prices">Live Prices</a>
+    <a href="storage.html" data-t="nav_storage">Cold Storage</a>
+    <a href="rentals.html" data-t="nav_rentals">Rentals</a>
+    <a href="schemes.html" data-t="nav_schemes">Gov Schemes</a>
+  </div>
+</nav>
+
+<div class="page-hero" style="background:linear-gradient(135deg,#3e1a00,#e65100);">
+  <div class="container">
+    <h1>🚜 Rentals & Farm Supplies</h1>
+    <p>Rent harvesters, tractors & farm equipment. Buy pesticides, fertilizers, and seeds at wholesale prices.</p>
+  </div>
+</div>
+
+<div class="container" style="padding:40px 24px 64px;">
+
+  <!-- TABS -->
+  <div class="tab-nav">
+    <button class="tab-nav-btn active" onclick="switchTab(this,'rentals')">🚜 Machinery Rental</button>
+    <button class="tab-nav-btn" onclick="switchTab(this,'pesticides')">🧪 Pesticides & Chemicals</button>
+    <button class="tab-nav-btn" onclick="switchTab(this,'fertilizers')">🌱 Fertilizers</button>
+    <button class="tab-nav-btn" onclick="switchTab(this,'seeds')">🌾 Seeds</button>
+  </div>
+
+  <!-- RENTALS TAB -->
+  <div id="tab-rentals">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;align-items:center;">
+      <div class="price-filters">
+        <button class="filter-btn active" onclick="setMachCat(this,'')">All</button>
+        <button class="filter-btn" onclick="setMachCat(this,'tractor')">🚜 Tractors</button>
+        <button class="filter-btn" onclick="setMachCat(this,'harvester')">🌾 Harvesters</button>
+        <button class="filter-btn" onclick="setMachCat(this,'irrigation')">💧 Irrigation</button>
+        <button class="filter-btn" onclick="setMachCat(this,'other')">🔧 Other</button>
+      </div>
+      <select id="machStateFilter" onchange="renderMachines()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;margin-left:auto;">
+        <option value="">All States</option><option>Punjab</option><option>Haryana</option><option value="UP">UP</option><option>Maharashtra</option>
+      </select>
+    </div>
+    <div class="rental-grid" id="rentalGrid"></div>
+  </div>
+
+  <!-- PESTICIDES TAB -->
+  <div id="tab-pesticides" style="display:none;">
+    <div class="alert alert-info" style="margin-bottom:24px;">⚠️ Always read label directions. Wear protective gear when handling chemicals. Follow safety guidelines.</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+      <div class="price-filters">
+        <button class="filter-btn active" onclick="setPestCat(this,'')">All</button>
+        <button class="filter-btn" onclick="setPestCat(this,'insecticide')">🐛 Insecticide</button>
+        <button class="filter-btn" onclick="setPestCat(this,'fungicide')">🍄 Fungicide</button>
+        <button class="filter-btn" onclick="setPestCat(this,'herbicide')">🌿 Herbicide</button>
+        <button class="filter-btn" onclick="setPestCat(this,'bio')">🌱 Bio-Pesticide</button>
+      </div>
+    </div>
+    <div class="rental-grid" id="pesticideGrid"></div>
+  </div>
+
+  <!-- FERTILIZERS TAB -->
+  <div id="tab-fertilizers" style="display:none;">
+    <div class="rental-grid" id="fertGrid"></div>
+  </div>
+
+  <!-- SEEDS TAB -->
+  <div id="tab-seeds" style="display:none;">
+    <div class="rental-grid" id="seedGrid"></div>
+  </div>
+</div>
+
+<!-- RENT MODAL -->
+<div class="modal-overlay" id="rentModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('rentModal').classList.remove('open')">✕</button>
+    <div class="form-title">🚜 Book Equipment Rental</div>
+    <div class="form-group"><label>Equipment</label><input type="text" id="rentItem" readonly style="background:#f5f5f5;"></div>
+    <div class="form-row">
+      <div class="form-group"><label>From Date *</label><input type="date" id="rentFrom"></div>
+      <div class="form-group"><label>To Date *</label><input type="date" id="rentTo"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Your Name *</label><input type="text" id="rentName" placeholder="Full name"></div>
+      <div class="form-group"><label>Phone *</label><input type="tel" id="rentPhone" placeholder="+91 XXXXX"></div>
+    </div>
+    <div class="form-group"><label>Village / Location *</label><input type="text" id="rentLocation" placeholder="Your farm location"></div>
+    <div class="form-group"><label>Acreage to Cover</label><input type="number" id="rentAcreage" placeholder="Acres"></div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="confirmRent()">✅ Confirm Booking</button>
+  </div>
+</div>
+
+<!-- BUY MODAL -->
+<div class="modal-overlay" id="buyModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('buyModal').classList.remove('open')">✕</button>
+    <div class="form-title">🛒 Place Order</div>
+    <div class="form-group"><label>Product</label><input type="text" id="buyItem" readonly style="background:#f5f5f5;"></div>
+    <div class="form-group"><label>Quantity *</label>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <input type="number" id="buyQty" value="1" min="1" style="width:100px;">
+        <span style="font-size:14px;color:var(--text-muted)">units</span>
+      </div>
+    </div>
+    <div class="form-group"><label>Delivery Address *</label><textarea rows="3" id="buyAddress" placeholder="Full address with pincode"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Name *</label><input type="text" id="buyName" placeholder="Full name"></div>
+      <div class="form-group"><label>Phone *</label><input type="tel" id="buyPhone" placeholder="+91 XXXXX"></div>
+    </div>
+    <div style="background:var(--green-pale);border-radius:8px;padding:14px;margin-bottom:20px;font-size:13px;color:var(--green);">
+      🚚 Free delivery for orders above ₹500. Usually delivered in 2-3 days.
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;" onclick="confirmBuy()">✅ Place Order (Pay on Delivery)</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <span>© 2025 GreenMarket — <a href="index.html" style="color:#a5d6a7;">Home</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+let currentMachCat = '';
+let currentPestCat = '';
+let currentMachines = [];
+let currentPesticides = [];
+let rentMachineId = null;
+let buySupplyId = null;
+
+function switchTab(btn, tab) {
+  document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['rentals','pesticides','fertilizers','seeds'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t === tab ? 'block' : 'none';
+  });
+}
+
+function setMachCat(btn, cat) {
+  document.querySelectorAll('#tab-rentals .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentMachCat = cat;
+  renderMachines();
+}
+function setPestCat(btn, cat) {
+  document.querySelectorAll('#tab-pesticides .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPestCat = cat;
+  renderPesticides();
+}
+
+async function renderMachines() {
+  const grid = document.getElementById('rentalGrid');
+  const params = new URLSearchParams();
+  if (currentMachCat) params.set('category', currentMachCat);
+  const state = document.getElementById('machStateFilter').value;
+  if (state) params.set('state', state);
+  try {
+    currentMachines = await api(`/rentals/machines?${params.toString()}`);
+  } catch (e) {
+    grid.innerHTML = `<p style="color:var(--text-muted)">Couldn't load machines: ${e.message}</p>`;
+    return;
+  }
+  grid.innerHTML = currentMachines.map(m => `
+    <div class="rental-card">
+      <div class="rental-img" style="background:${m.color}">${m.image}</div>
+      <div class="rental-body">
+        <div class="rental-name">${m.name}</div>
+        <div class="rental-desc">${m.description}</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">📍 ${m.district}, ${m.state}</div>
+        <div class="rental-price">₹${m.price_per_day.toLocaleString()}/${m.unit}</div>
+        <div class="rental-avail"><span class="${m.availability==='Available Now'?'badge-green':'badge-amber'}">${m.availability}</span></div>
+        <button onclick="openRent(${m.id})" class="btn btn-primary" style="width:100%;padding:10px;">📅 Book Rental</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderSupply(arr, gridId) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = arr.map(s => `
+    <div class="supply-card">
+      <div class="supply-icon">${s.image}</div>
+      <div class="supply-name">${s.name}</div>
+      <div class="supply-brand">${s.brand}</div>
+      <div class="supply-details">${s.description}</div>
+      <div style="margin-bottom:4px;font-size:12px;color:var(--text-muted)">Unit: ${s.unit}</div>
+      <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:14px;">
+        <span class="supply-price">₹${s.price}</span>
+        ${s.old_price ? `<span class="supply-old">₹${s.old_price}</span>` : ''}
+        ${s.discount_label ? `<span class="supply-discount">${s.discount_label}</span>` : ''}
+      </div>
+      <button onclick="openBuy(${s.id},'${s.name.replace(/'/g,"\\'")}')" class="btn btn-primary" style="width:100%;padding:10px;margin-top:auto;">🛒 Order Now</button>
+    </div>`).join('');
+}
+
+async function loadSupplyType(supplyType, gridId) {
+  try {
+    const arr = await api(`/rentals/supplies?supply_type=${supplyType}`);
+    if (supplyType === 'pesticide') currentPesticides = arr;
+    renderSupply(arr, gridId);
+  } catch (e) {
+    document.getElementById(gridId).innerHTML = `<p style="color:var(--text-muted)">Couldn't load products: ${e.message}</p>`;
+  }
+}
+
+async function renderPesticides() {
+  const grid = document.getElementById('pesticideGrid');
+  const params = new URLSearchParams({ supply_type: 'pesticide' });
+  if (currentPestCat) params.set('category', currentPestCat);
+  try {
+    const arr = await api(`/rentals/supplies?${params.toString()}`);
+    renderSupply(arr, 'pesticideGrid');
+  } catch (e) {
+    grid.innerHTML = `<p style="color:var(--text-muted)">Couldn't load products: ${e.message}</p>`;
+  }
+}
+
+function openRent(id) {
+  const m = currentMachines.find(x => x.id === id);
+  rentMachineId = id;
+  document.getElementById('rentItem').value = m ? m.name : '';
+  document.getElementById('rentModal').classList.add('open');
+}
+function openBuy(id, name) {
+  buySupplyId = id;
+  document.getElementById('buyItem').value = name || '';
+  document.getElementById('buyModal').classList.add('open');
+}
+
+async function confirmRent() {
+  const payload = {
+    from_date: document.getElementById('rentFrom').value,
+    to_date: document.getElementById('rentTo').value,
+    name: document.getElementById('rentName').value.trim(),
+    phone: document.getElementById('rentPhone').value.trim(),
+    location: document.getElementById('rentLocation').value.trim(),
+    acreage: document.getElementById('rentAcreage').value ? parseFloat(document.getElementById('rentAcreage').value) : null,
+  };
+  if (!payload.from_date || !payload.to_date || !payload.name || !payload.phone || !payload.location) {
+    alert('Please fill in all required fields (*).');
+    return;
+  }
+  let booking;
+  try {
+    booking = await api(`/rentals/machines/${rentMachineId}/book`, { method: 'POST', body: JSON.stringify(payload) });
+  } catch (e) {
+    alert('Could not confirm booking: ' + e.message);
+    return;
+  }
+  document.getElementById('rentModal').classList.remove('open');
+  alert(`🎉 Booking confirmed! The equipment owner will call you within 2 hours. Reference: ${booking.reference_id}`);
+}
+
+async function confirmBuy() {
+  const payload = {
+    quantity: parseInt(document.getElementById('buyQty').value, 10) || 1,
+    delivery_address: document.getElementById('buyAddress').value.trim(),
+    name: document.getElementById('buyName').value.trim(),
+    phone: document.getElementById('buyPhone').value.trim(),
+  };
+  if (!payload.delivery_address || !payload.name || !payload.phone) {
+    alert('Please fill in all required fields (*).');
+    return;
+  }
+  let order;
+  try {
+    order = await api(`/rentals/supplies/${buySupplyId}/order`, { method: 'POST', body: JSON.stringify(payload) });
+  } catch (e) {
+    alert('Could not place order: ' + e.message);
+    return;
+  }
+  document.getElementById('buyModal').classList.remove('open');
+  alert(`✅ Order placed! Expected delivery in 2-3 days. You can pay on delivery. Order ID: ${order.order_id}`);
+}
+
+renderMachines();
+loadSupplyType('fertilizer', 'fertGrid');
+loadSupplyType('seed', 'seedGrid');
+renderPesticides();
+</script>
+</body>
+</html>
