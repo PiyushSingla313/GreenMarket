@@ -45,7 +45,7 @@ app.include_router(schemes.router)
 
 @app.get("/api/health", tags=["Health"])
 def health_check():
-    return {"status": "ok", "service": "greenmarket-api"}
+    return {"status": "ok", "service": "greenmarket-api", "version": app.version}
 
 
 # Serve the frontend (index.html, marketplace.html, style.css, app.js, ...).
