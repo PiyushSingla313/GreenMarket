@@ -23,9 +23,9 @@ def list_storage(
 ):
     query = db.query(models.ColdStorage)
     if type:
-        query = query.filter(models.ColdStorage.type == type)
+        query = query.filter(models.ColdStorage.type.ilike(type))
     if state:
-        query = query.filter(models.ColdStorage.state == state)
+        query = query.filter(models.ColdStorage.state.ilike(state))
     results = query.all()
     if crop:
         results = [s for s in results if any(crop.lower() in c.lower() for c in s.crops)]
