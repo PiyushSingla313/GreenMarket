@@ -25,9 +25,9 @@ def list_machines(
 ):
     query = db.query(models.RentalMachine)
     if category:
-        query = query.filter(models.RentalMachine.category == category)
+        query = query.filter(models.RentalMachine.category.ilike(category))
     if state:
-        query = query.filter(models.RentalMachine.state == state)
+        query = query.filter(models.RentalMachine.state.ilike(state))
     return query.all()
 
 
@@ -59,9 +59,9 @@ def list_supplies(
 ):
     query = db.query(models.Supply)
     if supply_type:
-        query = query.filter(models.Supply.supply_type == supply_type)
+        query = query.filter(models.Supply.supply_type.ilike(supply_type))
     if category:
-        query = query.filter(models.Supply.category == category)
+        query = query.filter(models.Supply.category.ilike(category))
     return query.all()
 
 
