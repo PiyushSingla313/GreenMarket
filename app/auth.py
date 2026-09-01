@@ -50,10 +50,11 @@ def get_current_user(
         user_id: str = payload.get("sub")
         if user_id is None:
             raise credentials_exception
-    except JWTError:
+        user_id = int(user_id)
+    except (JWTError, ValueError):
         raise credentials_exception
 
-    user = db.query(models.User).filter(models.User.id == int(user_id)).first()
+    user = db.query(models.User).filter(models.User.id == user_id).first()
     if user is None:
         raise credentials_exception
     return user
@@ -70,5 +71,5 @@ def get_current_user_optional(
         if not user_id:
             return None
         return db.query(models.User).filter(models.User.id == int(user_id)).first()
-    except JWTError:
+    except (JWTError, ValueError):
         return None
