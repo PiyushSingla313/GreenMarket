@@ -21,7 +21,7 @@ def list_schemes(
 ):
     query = db.query(models.Scheme)
     if category:
-        query = query.filter(models.Scheme.category == category)
+        query = query.filter(models.Scheme.category.ilike(category))
     return query.all()
 
 
