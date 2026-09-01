@@ -17,9 +17,9 @@ def mandi_prices(
 ):
     query = db.query(models.MandiPrice)
     if category:
-        query = query.filter(models.MandiPrice.category == category)
+        query = query.filter(models.MandiPrice.category.ilike(category))
     if state:
-        query = query.filter(models.MandiPrice.state == state)
+        query = query.filter(models.MandiPrice.state.ilike(state))
     return query.order_by(models.MandiPrice.crop.asc()).all()
 
 
