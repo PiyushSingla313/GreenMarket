@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -45,7 +46,12 @@ app.include_router(schemes.router)
 
 @app.get("/api/health", tags=["Health"])
 def health_check():
-    return {"status": "ok", "service": "greenmarket-api", "version": app.version}
+    return {
+        "status": "ok",
+        "service": "greenmarket-api",
+        "version": app.version,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
 
 
 # Serve the frontend (index.html, marketplace.html, style.css, app.js, ...).
