@@ -21,9 +21,9 @@ def list_listings(
     query = db.query(models.Listing).filter(models.Listing.status == "active")
 
     if category:
-        query = query.filter(models.Listing.category == category)
+        query = query.filter(models.Listing.category.ilike(category))
     if state:
-        query = query.filter(models.Listing.state == state)
+        query = query.filter(models.Listing.state.ilike(state))
     if search:
         like = f"%{search}%"
         query = query.filter(
